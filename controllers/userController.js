@@ -12,13 +12,27 @@ const userController = {
     // console.log(req.body)
     const { name, email, password, confirmPassword }
       = req.body
-    User.create({
-      name,
-      email,
-      password: bcrypt.hashSync(password, bcrypt.genSaltSync(10))
-    })
+    if (password !== confirmPassword) {
+      req.flash('error_msg', 'Password and Confirm Password doesn\'t match!')
+      return res.redirect('/signup')
+    }
+    User.findOne({ where: { email } })
       .then(user => {
-        return res.redirect('/signin')
+        if (user) {
+          req.flash('error_msg', 'This email has been registered!')
+          return res.redirect('/signup')
+        } else {
+          User.create({
+            name,
+            email,
+            password: bcrypt.hashSync(password, bcrypt.genSaltSync(10))
+          })
+            .then(user => {
+              req.flash('success_msg', 'Registration Succeeded!')
+              return res.redirect('/signin')
+            })
+
+        }
       })
       .catch(err => {
         console.log(err)
