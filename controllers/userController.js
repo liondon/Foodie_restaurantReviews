@@ -37,7 +37,22 @@ const userController = {
       .catch(err => {
         console.log(err)
       })
-  }
+  },
+
+  signInPage: (req, res) => {
+    return res.render('signin')
+  },
+
+  signIn: (req, res) => {
+    req.flash('sucess.msg', 'Login succeeded!')
+    return res.redirect('/restaurants')
+  },
+
+  logOut: (req, res) => {
+    req.flash('sucess.msg', 'Logout succeeded!')
+    req.logout()  // provided by passport
+    return res.redirect('/signin')
+  },
 }
 
 module.exports = userController
