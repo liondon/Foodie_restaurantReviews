@@ -68,6 +68,15 @@ const adminController = {
         return res.redirect(`/admin/restaurants/${req.params.id}`)
       })
       .catch(err => console.log(err))
+  },
+
+  deleteRestaurant: (req, res) => {
+    Restaurant.findByPk(req.params.id)
+      .then(restaurant => {
+        restaurant.destroy()
+        return res.redirect('/admin/restaurants')
+      })
+      .catch(err => console.log(err))
   }
 }
 
