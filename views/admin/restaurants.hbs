@@ -1,3 +1,33 @@
 <div>
-  admin restaurants
+  <a href="/admin/restaurants/create">
+    <button class="btn btn-outline-primary my-2 my-sm-0">Add restaurant</button>
+  </a>
+</div>
+<div class="mt-5">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each restaurants}}
+      <tr>
+        <th scope="row">{{this.id}}</th>
+        <td>{{this.name}}</td>
+        <a href="/admin/restaurants/:id">
+          <button class="btn btn-outline-primary my-2 my-sm-0">Detail</button>
+        </a>
+        <a href="/admin/restaurants/:id/edit">
+          <button class="btn btn-outline-primary my-2 my-sm-0">Edit</button>
+        </a>
+        <form action="/admin/restaurants/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-outline-primary my-2 my-sm-0">Delete</button>
+        </form>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
 </div>
