@@ -1,5 +1,20 @@
 const db = require('../models')
 const Restaurant = db.Restaurant
+const fs = require('fs')
+
+const writeImgFile = (file) => {
+  return new Promise((resolve, reject) => {
+    if (file) {
+      try {
+        let data = fs.readFileSync(file.path)
+        fs.writeFileSync(`upload/${file.originalname}`, data)
+      } catch (err) {
+        return reject(err)
+      }
+    }
+    return resolve()
+  })
+}
 
 const adminController = {
   getRestaurants: (req, res) => {
@@ -16,23 +31,21 @@ const adminController = {
 
   postRestaurant: (req, res) => {
     const { name, tel, addr, open_hours, desc } = req.body
-    // Empty field check could be done by Bootstrap
-    if (!name) {
-      req.flash('error_msg', 'Name is required!')
-      return res.redirect('back')
-    }
-    Restaurant.create({
-      name,
-      tel,
-      addr,
-      open_hours,
-      desc
-    })
-      .then(restaurant => {
-        req.flash('success_msg', `${restaurant.name} created!`)
-        return res.redirect('/admin/restaurants')
+    const { file } = req
+    writeImgFile(file).then(() => {
+      Restaurant.create({
+        name,
+        tel,
+        addr,
+        open_hours,
+        desc,
+        image: file ? `/upload/${file.originalname}` : null
       })
-      .catch(err => console.log(err))
+        .then(restaurant => {
+          req.flash('success_msg', `${restaurant.name} created!`)
+          return res.redirect('/admin/restaurants')
+        })
+    }).catch(err => console.log(err))
   },
 
   getRestaurant: (req, res) => {
@@ -53,21 +66,24 @@ const adminController = {
 
   putRestaurant: (req, res) => {
     const { name, tel, addr, open_hours, desc } = req.body
-    Restaurant.findByPk(req.params.id)
-      .then(restaurant => {
-        return restaurant.update({
-          name,
-          tel,
-          addr,
-          open_hours,
-          desc
+    const { file } = req
+    writeImgFile(file).then(() => {
+      Restaurant.findByPk(req.params.id)
+        .then(restaurant => {
+          return restaurant.update({
+            name,
+            tel,
+            addr,
+            open_hours,
+            desc,
+            image: file ? `/upload/${file.originalname}` : restaurant.image
+          })
         })
-      })
-      .then(restaurant => {
-        req.flash('success_msg', `${restaurant.name} updated!`)
-        return res.redirect(`/admin/restaurants/${req.params.id}`)
-      })
-      .catch(err => console.log(err))
+        .then(restaurant => {
+          req.flash('success_msg', `${restaurant.name} updated!`)
+          return res.redirect(`/admin/restaurants/${req.params.id}`)
+        })
+    }).catch(err => console.log(err))
   },
 
   deleteRestaurant: (req, res) => {

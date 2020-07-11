@@ -35,6 +35,8 @@ app.use((req, res, next) => {
 
 app.use(methodOverride('_method'))
 
+app.use('/upload', express.static(__dirname + '/upload'))
+
 // listen to port 3000
 app.listen('3000', () => {
   db.sequelize.sync()

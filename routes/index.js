@@ -1,6 +1,8 @@
 const restController = require('../controllers/restController')
 const adminController = require('../controllers/adminController')
 const userController = require('../controllers/userController')
+const multer = require('multer')
+const upload = multer({ dest: 'temp/' })
 
 module.exports = (app, passport) => {
   const authenticate = (req, res, next) => {
@@ -20,17 +22,17 @@ module.exports = (app, passport) => {
     return res.redirect('/signin')
   }
 
-  app.get('/', authenticate, (req, res) => res.redirect('/restaurants'))
   app.get('/restaurants', authenticate, restController.getRestaurants)
+  app.get('/', authenticate, (req, res) => res.redirect('/restaurants'))
 
-  app.get('/admin', authenticateAdmin, (req, res) => res.redirect('admin/restaurants'))
-  app.get('/admin/restaurants', authenticateAdmin, adminController.getRestaurants)
-  app.get('/admin/restaurants/:id', authenticateAdmin, adminController.getRestaurant)
-  app.get('/admin/restaurants/:id/edit', authenticateAdmin, adminController.editRestaurant)
-  app.put('/admin/restaurants/:id', authenticateAdmin, adminController.putRestaurant)
-  app.delete('/admin/restaurants/:id', authenticateAdmin, adminController.deleteRestaurant)
   app.get('/admin/restaurants/create', authenticateAdmin, adminController.createRestaurant)
-  app.post('/admin/restaurants', authenticateAdmin, adminController.postRestaurant)
+  app.get('/admin/restaurants/:id/edit', authenticateAdmin, adminController.editRestaurant)
+  app.get('/admin/restaurants/:id', authenticateAdmin, adminController.getRestaurant)
+  app.put('/admin/restaurants/:id', authenticateAdmin, upload.single('image'), adminController.putRestaurant)
+  app.delete('/admin/restaurants/:id', authenticateAdmin, adminController.deleteRestaurant)
+  app.get('/admin/restaurants', authenticateAdmin, adminController.getRestaurants)
+  app.post('/admin/restaurants', authenticateAdmin, upload.single('image'), adminController.postRestaurant)
+  app.get('/admin', authenticateAdmin, (req, res) => res.redirect('admin/restaurants'))
 
   app.get('/signup', userController.signUpPage)
   app.post('/signup', userController.signUp)
