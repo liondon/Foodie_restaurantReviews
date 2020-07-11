@@ -9,6 +9,7 @@ const passport = require('./config/passport')
 const db = require('./models')
 
 const app = express()
+const port = process.env.PORT || 3000
 
 // setup handlebars
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
@@ -37,10 +38,10 @@ app.use(methodOverride('_method'))
 
 app.use('/upload', express.static(__dirname + '/upload'))
 
-// listen to port 3000
-app.listen('3000', () => {
+// listen to port
+app.listen(port, () => {
   db.sequelize.sync()
-  console.log(`Express server is running on http://localhost:3000`)
+  console.log(`Express server is running on http://localhost:${port}`)
 })
 
 require('./routes')(app, passport)
