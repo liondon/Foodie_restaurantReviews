@@ -41,6 +41,33 @@ const adminController = {
         return res.render('admin/restaurant', { restaurant })
       })
       .catch(err => console.log(err))
+  },
+
+  editRestaurant: (req, res) => {
+    Restaurant.findByPk(req.params.id, { raw: true })
+      .then(restaurant => {
+        return res.render('admin/create', { restaurant })
+      })
+      .catch(err => console.log(err))
+  },
+
+  putRestaurant: (req, res) => {
+    const { name, tel, addr, open_hours, desc } = req.body
+    Restaurant.findByPk(req.params.id)
+      .then(restaurant => {
+        return restaurant.update({
+          name,
+          tel,
+          addr,
+          open_hours,
+          desc
+        })
+      })
+      .then(restaurant => {
+        req.flash('success_msg', `${restaurant.name} updated!`)
+        return res.redirect(`/admin/restaurants/${req.params.id}`)
+      })
+      .catch(err => console.log(err))
   }
 }
 
