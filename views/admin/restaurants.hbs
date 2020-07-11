@@ -17,15 +17,17 @@
       <tr>
         <th scope="row">{{this.id}}</th>
         <td>{{this.name}}</td>
-        <a href="/admin/restaurants/:id">
-          <button class="btn btn-outline-primary my-2 my-sm-0">Detail</button>
-        </a>
-        <a href="/admin/restaurants/:id/edit">
-          <button class="btn btn-outline-primary my-2 my-sm-0">Edit</button>
-        </a>
-        <form action="/admin/restaurants/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
-          <button type="submit" class="btn btn-outline-primary my-2 my-sm-0">Delete</button>
-        </form>
+        <td>
+          <a href="/admin/restaurants/{{this.id}}">
+            <button class="btn btn-outline-primary my-2 my-sm-0">Detail</button>
+          </a>
+          <a href="/admin/restaurants/{{this.id}}/edit">
+            <button class="btn btn-outline-primary my-2 my-sm-0">Edit</button>
+          </a>
+          <form action="/admin/restaurants/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+            <button type="submit" class="btn btn-outline-primary my-2 my-sm-0">Delete</button>
+          </form>
+        </td>
       </tr>
       {{/each}}
     </tbody>
