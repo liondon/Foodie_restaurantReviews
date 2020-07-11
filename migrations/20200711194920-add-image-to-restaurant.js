@@ -4,7 +4,7 @@ const { query } = require("express");
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.addColumn('restaurants', 'image', {
+    await queryInterface.addColumn('Restaurants', 'image', {
       type: Sequelize.STRING
     })
   },
