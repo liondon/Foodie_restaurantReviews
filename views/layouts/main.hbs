@@ -28,13 +28,11 @@
       </ul>
       <div>
         {{#if user.isAdmin}}
-        <li class="nav-item active">
-          <a class="nav-link" href="/admin">Admin</a>
-        </li>
+        <a href="/admin">Admin</a>
         {{/if}}
         {{#if user}}
         <span class="navbar-text">Hi, {{user.name}}!</span>
-        <a href="/users/{{user.id}}" style="color: white;margin-right: 10px;">Profile</a>
+        <a href="/users/{{user.id}}">Profile</a>
         <a href="/logout"><button class="btn btn-outline-primary my-2 my-sm-0">Log Out</button></a>
         {{else}}
         <span class="navbar-text">
