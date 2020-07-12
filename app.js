@@ -40,7 +40,7 @@ app.use('/upload', express.static(__dirname + '/upload'))
 
 // listen to port
 app.listen(port, () => {
-  db.sequelize.sync()
+  // db.sequelize.sync()
   console.log(`Express server is running on http://localhost:${port}`)
 })
 
