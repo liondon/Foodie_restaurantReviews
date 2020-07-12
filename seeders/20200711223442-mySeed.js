@@ -27,7 +27,7 @@ module.exports = {
       updatedAt: new Date()
     }], {})
 
-    await queryInterface.bulkInsert('restaurants',
+    await queryInterface.bulkInsert('Restaurants',
       Array.from({ length: 50 }).map(d => ({
         name: faker.name.findName(),
         tel: faker.phone.phoneNumber(),
