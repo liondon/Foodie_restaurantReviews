@@ -1,0 +1,31 @@
+{{>adminNav}}
+<div class="mt-3">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Email</th>
+        <th scope="col">Role</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each users}}
+      <tr>
+        <th scope="row">{{this.id}}</th>
+        <td>{{this.email}}</td>
+        <td>{{#if this.isAdmin}}Admin{{else}}User{{/if}}</td>
+        <td>
+          <form action="/admin/users/{{this.id}}?_method=PUT" method="POST">
+            {{#if this.isAdmin}}
+            <button type="submit" class="btn btn-outline-primary my-2 my-sm-0">Set as User</button>
+            {{else}}
+            <button type="submit" class="btn btn-outline-primary my-2 my-sm-0">Set as Admin</button>
+            {{/if}}
+          </form>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
