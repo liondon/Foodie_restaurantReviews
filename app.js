@@ -16,7 +16,11 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // setup handlebars
-app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }))
+app.engine('hbs', exphbs({
+  defaultLayout: 'main',
+  extname: '.hbs',
+  helpers: require('./config/hbs-helpers')
+}))
 app.set('view engine', 'hbs')
 
 // setup bodyParser
