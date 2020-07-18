@@ -12,7 +12,7 @@
   </ul>
 </div>
 
-<div class="row">
+<div class="row mb-5">
   {{#each restaurants}}
   <div class="col-md-4">
     <div class="card mb-4 shadow-sm">
@@ -30,5 +30,25 @@
   </div>
   {{/each}}
 </div>
-<br />
-<br />
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" href="/restaurants?page={{prev}}&categoryId={{categoryId}}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {{#each pageIndices}}
+    {{#ifEq this ../page}}
+    <li class="page-item active"><a class="page-link" href="#">{{this}}</a></li>
+    {{else}}
+    <li class="page-item"><a class="page-link"
+        href="/restaurants?page={{this}}&categoryId={{../categoryId}}">{{this}}</a></li>
+    {{/ifEq}}
+    {{/each}}
+    <a class="page-link" href="/restaurants?page={{next}}&categoryId={{categoryId}}" aria-label="Next">
+      <span aria-hidden="true">&raquo;</span>
+    </a>
+    </li>
+  </ul>
+</nav>
