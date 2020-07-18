@@ -4,7 +4,14 @@ const Category = db.Category
 
 const restController = {
   getRestaurants: async (req, res) => {
+    let categoryId = ''
+    let whereQuery = {}
+    if (req.query.categoryId) {
+      categoryId = Number(req.query.categoryId)
+      whereQuery.CategoryId = categoryId
+    }
     const restaurants = await Restaurant.findAll({
+      where: whereQuery,
       include: [Category],
       raw: true,
       nest: true
@@ -14,12 +21,15 @@ const restController = {
       desc: r.desc.substring(0, 50)
     }))
     const categories = await Category.findAll({
-      include: [Restaurant],
+      // include: [Restaurant],
       raw: true,
       nest: true
     })
-
-    return res.render('restaurants', { restaurants: restData, categories })
+    return res.render('restaurants', {
+      restaurants: restData,
+      categories,
+      categoryId
+    })
   },
 
   getRestaurant: async (req, res) => {

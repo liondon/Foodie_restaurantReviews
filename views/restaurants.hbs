@@ -1,3 +1,17 @@
+<div class="mb-5">
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link {{#ifEq categoryId ''}}active{{/ifEq}}" href="?categoryId=">All</a>
+    </li>
+    {{#each categories}}
+    <li class="nav-item">
+      <a class="nav-link {{#ifEq ../categoryId this.id}}active{{/ifEq}}"
+        href="?categoryId={{this.id}}">{{this.name}}</a>
+    </li>
+    {{/each}}
+  </ul>
+</div>
+
 <div class="row">
   {{#each restaurants}}
   <div class="col-md-4">
