@@ -20,7 +20,17 @@ const restController = {
     })
 
     return res.render('restaurants', { restaurants: restData, categories })
-  }
+  },
+
+  getRestaurant: async (req, res) => {
+    const restaurant = await Restaurant.findByPk(req.params.id, {
+      include: [Category],
+      raw: true,
+      nest: true
+    })
+    return res.render('restaurant', { restaurant })
+  },
+
 }
 
 module.exports = restController
