@@ -118,7 +118,6 @@ const adminController = {
         return res.render('admin/users', { users })
       })
       .catch(err => console.log(err))
-
   },
 
   putUser: (req, res) => {
