@@ -16,6 +16,16 @@
     </div>
 
     <div class="form-group">
+      <label for="categoryId">Category</label>
+      <select class="form-control" id="categoryId" name="categoryId">
+        {{!-- <option value="" {{#if (eq categories.compareWith undefined)}}SELECTED{{/if}}>All</option> --}}
+        {{#each categories}}
+        <option value="{{this.id}}">{{this.name}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    <div class="form-group">
       <label for="tel">Tel</label>
       <input type="text" class="form-control" id="tel" name="tel" placeholder="Enter tel" autofocus
         value={{restaurant.tel}}>

@@ -17,11 +17,15 @@ const adminController = {
   },
 
   createRestaurant: (req, res) => {
-    return res.render('admin/create')
+    Category.findAll({ raw: true, nest: true })
+      .then(categories => {
+        return res.render('admin/create', { categories })
+      })
+      .catch(err => console.log(err))
   },
 
   postRestaurant: async (req, res) => {
-    const { name, tel, addr, open_hours, desc } = req.body
+    const { name, tel, addr, open_hours, desc, categoryId } = req.body
     const { file } = req
     if (file) {
       imgur.setClientID(IMGUR_CLIENT_ID)
@@ -32,7 +36,8 @@ const adminController = {
           addr,
           open_hours,
           desc,
-          image: file ? img.data.link : null
+          image: file ? img.data.link : null,
+          CategoryId: categoryId
         })
           .then(restaurant => {
             req.flash('success_msg', `${restaurant.name} created!`)
@@ -40,28 +45,43 @@ const adminController = {
           })
           .catch(err => console.log(err))
       })
+    } else {
+      Restaurant.create({
+        name,
+        tel,
+        addr,
+        open_hours,
+        desc,
+        image: file ? img.data.link : null,
+        CategoryId: categoryId
+      })
+        .then(restaurant => {
+          req.flash('success_msg', `${restaurant.name} created!`)
+          return res.redirect('/admin/restaurants')
+        })
+        .catch(err => console.log(err))
     }
   },
 
   getRestaurant: (req, res) => {
     Restaurant.findByPk(req.params.id, { include: [Category], raw: true, nest: true })
       .then(restaurant => {
-        console.log(restaurant)
         return res.render('admin/restaurant', { restaurant })
       })
       .catch(err => console.log(err))
   },
 
-  editRestaurant: (req, res) => {
+  editRestaurant: async (req, res) => {
+    const categories = await Category.findAll({ raw: true, nest: true })
     Restaurant.findByPk(req.params.id, { raw: true })
       .then(restaurant => {
-        return res.render('admin/create', { restaurant })
+        return res.render('admin/create', { restaurant, categories })
       })
       .catch(err => console.log(err))
   },
 
   putRestaurant: async (req, res) => {
-    const { name, tel, addr, open_hours, desc } = req.body
+    const { name, tel, addr, open_hours, desc, categoryId } = req.body
     const { file } = req
 
     // Try to reduce callback & duplicated code
@@ -76,7 +96,8 @@ const adminController = {
               addr,
               open_hours,
               desc,
-              image: file ? img.data.link : restaurant.image
+              image: file ? img.data.link : restaurant.image,
+              CategoryId: categoryId
             })
           })
           .then(restaurant => {
@@ -94,7 +115,8 @@ const adminController = {
             addr,
             open_hours,
             desc,
-            image: file ? img.data.link : restaurant.image
+            image: file ? img.data.link : restaurant.image,
+            CategoryId: categoryId
           })
         })
         .then(restaurant => {
