@@ -1,0 +1,42 @@
+{{>adminNav}}
+{{#if category}}
+<form class="mt-5" action="/admin/categories/{{category.id}}?_method=PUT" method="POST">
+  <input type="text" id="name" name="name" required autofocus value="{{category.name}}">
+  <button type="submit">Update</button>
+  <a href="/admin/categories">or Create a new category</a>
+</form>
+{{else}}
+<form class="mt-5" action="/admin/categories" method="POST">
+  <input type="text" id="name" name="name" placeholder="Add a new category" required autofocus
+    value="{{category.name}}">
+  <button type="submit">Submit</button>
+</form>
+{{/if}}
+
+<div class="mt-3">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Category Name</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each categories}}
+      <tr>
+        <th scope="row">{{this.id}}</th>
+        <td>{{this.name}}</td>
+        <td>
+          <a href="/admin/categories/{{this.id}}">
+            <button class="btn btn-outline-primary my-2 my-sm-0">Edit</button>
+          </a>
+          <form action="/admin/categories/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+            <button type="submit" class="btn btn-outline-primary my-2 my-sm-0">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
