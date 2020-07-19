@@ -1,6 +1,8 @@
 const db = require('../models')
 const Restaurant = db.Restaurant
 const Category = db.Category
+const Comment = db.Comment
+const User = db.User
 
 const pageLimit = 9
 
@@ -48,11 +50,14 @@ const restController = {
 
   getRestaurant: async (req, res) => {
     const restaurant = await Restaurant.findByPk(req.params.id, {
-      include: [Category],
-      raw: true,
-      nest: true
+      include: [
+        Category,
+        { model: Comment, include: User }
+      ]
+      // using 'nest: true, raw: true' here have some problem,
+      // So, use toJSON() later instead
     })
-    return res.render('restaurant', { restaurant })
+    return res.render('restaurant', { restaurant: restaurant.toJSON() })
   },
 
 }
