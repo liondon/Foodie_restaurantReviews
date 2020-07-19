@@ -10,6 +10,14 @@ const commentController = {
       UserId: req.user.id  //req.user comes from 'passport'
     })
     return res.redirect(`/restaurants/${restaurantId}`)
+  },
+  deleteComment: (req, res) => {
+    return Comment.findByPk(req.params.id)
+      .then(comment => {
+        comment.destroy()
+        res.redirect(`/restaurants/${comment.RestaurantId}`)
+      })
+      .catch(err => console.log(err))
   }
 }
 
