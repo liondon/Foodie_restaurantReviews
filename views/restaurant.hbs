@@ -5,7 +5,6 @@
   </div>
 
   <div class="col-md-4">
-    <br>
     <div class="well">
       <img class="img-responsive center-block" src="{{restaurant.image}}" style="width: 250px;margin-bottom: 25px;">
       <ul class="list-unstyled">
@@ -18,11 +17,16 @@
   <div class="col-md-8">
     <p>{{restaurant.desc}}</p>
   </div>
-  <hr>
 </div>
 
-<hr>
+<form action="/comments" method="POST">
+  <div class="form-group">
+    <label for="content">Leave your comment:</label>
+    <textarea class="form-control" id="content" name="content" rows="3"></textarea>
+  </div>
+  <input type="hidden" name="restaurantId" value="{{restaurant.id}}" />
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<br />
 
-<br />
-<br />
 <a href="javascript:history.back()">回上一頁</a>
