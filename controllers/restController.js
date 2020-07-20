@@ -60,6 +60,22 @@ const restController = {
     return res.render('restaurant', { restaurant: restaurant.toJSON() })
   },
 
+  getFeeds: async (req, res) => {
+    const restaurants = await Restaurant.findAll({
+      order: [['createdAt', 'DESC']],
+      include: [Category],
+      limit: 10,
+      nest: true, raw: true
+    })
+    const comments = await Comment.findAll({
+      order: [['createdAt', 'DESC']],
+      include: [User, Restaurant],
+      limit: 10,
+      nest: true, raw: true
+    })
+    return res.render('feeds', { restaurants, comments })
+  }
+
 }
 
 module.exports = restController

@@ -24,12 +24,13 @@ module.exports = (app, passport) => {
     return res.redirect('/signin')
   }
 
-  app.get('/restaurants', authenticate, restController.getRestaurants)
+  app.get('/restaurants/feeds', authenticate, restController.getFeeds)
   app.get('/restaurants/:id', authenticate, restController.getRestaurant)
+  app.get('/restaurants', authenticate, restController.getRestaurants)
   app.get('/', authenticate, (req, res) => res.redirect('/restaurants'))
 
-  app.post('/comments', authenticate, commentController.postComment)
   app.delete('/comments/:id', authenticateAdmin, commentController.deleteComment)
+  app.post('/comments', authenticate, commentController.postComment)
 
   app.get('/admin/restaurants/create', authenticateAdmin, adminController.createRestaurant)
   app.get('/admin/restaurants/:id/edit', authenticateAdmin, adminController.editRestaurant)
@@ -39,14 +40,14 @@ module.exports = (app, passport) => {
   app.get('/admin/restaurants', authenticateAdmin, adminController.getRestaurants)
   app.post('/admin/restaurants', authenticateAdmin, upload.single('image'), adminController.postRestaurant)
 
-  app.get('/admin/users', authenticateAdmin, adminController.getUsers)
   app.put('/admin/users/:id', authenticateAdmin, adminController.putUser)
+  app.get('/admin/users', authenticateAdmin, adminController.getUsers)
 
-  app.get('/admin/categories', authenticateAdmin, categoryController.getCategories)
-  app.post('/admin/categories', authenticateAdmin, categoryController.postCategory)
   app.get('/admin/categories/:id', authenticateAdmin, categoryController.getCategories)
   app.put('/admin/categories/:id', authenticateAdmin, categoryController.putCategory)
   app.delete('/admin/categories/:id', authenticateAdmin, categoryController.deleteCategory)
+  app.get('/admin/categories', authenticateAdmin, categoryController.getCategories)
+  app.post('/admin/categories', authenticateAdmin, categoryController.postCategory)
 
   app.get('/admin', authenticateAdmin, (req, res) => res.redirect('admin/restaurants'))
 
