@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const db = require('../models')
 const User = db.User
 const Favorite = db.Favorite
+const Like = db.Like
 
 const userController = {
   signUpPage: (req, res) => {
@@ -74,8 +75,29 @@ const userController = {
     })
     await favorite.destroy()
     return res.redirect('back')
+  },
 
+  addLike: async (req, res) => {
+    const { restaurantId } = req.params
+    const like = await Like.create({
+      UserId: req.user.id,
+      RestaurantId: restaurantId
+    })
+    return res.redirect('back')
+  },
+
+  removeLike: async (req, res) => {
+    const { restaurantId } = req.params
+    const like = await Like.findOne({
+      where: {
+        UserId: req.user.id,
+        RestaurantId: restaurantId
+      }
+    })
+    await like.destroy()
+    return res.redirect('back')
   }
+
 }
 
 module.exports = userController

@@ -8,7 +8,7 @@
     <div class="well">
       <img class="img-responsive center-block" src="{{restaurant.image}}" style="width: 250px;margin-bottom: 25px;">
       <ul class="list-unstyled">
-        <li><strong>Tel:<a /strong> {{restaurant.tel}}</li>
+        <li><strong>Tel:</strong> {{restaurant.tel}}</li>
         <li><strong>Address:</strong> {{restaurant.addr}}</li>
         <li><strong>Open Hour:</strong> {{restaurant.open_hours}}</li>
       </ul>
@@ -18,15 +18,24 @@
     <p>{{restaurant.desc}}</p>
 
     {{#if isFavorite }}
-    <form action="/favorite/{{restaurant.id}}?_method=DELETE" method="POST" style="display: contents;">
+    <form action="/favorite/{{restaurant.id}}?_method=DELETE" method="POST" style="display: inline;">
       <button type="submit" class="btn btn-danger">Remove from Favorites</button>
     </form>
     {{else}}
-    <form action="/favorite/{{restaurant.id}}" method="POST" style="display: contents;">
+    <form action="/favorite/{{restaurant.id}}" method="POST" style="display: inline;">
       <button type="submit" class="btn btn-primary">Add to Favorites</button>
     </form>
     {{/if}}
 
+    {{#if isLike }}
+    <form action="/like/{{restaurant.id}}?_method=DELETE" method="POST" style="display: inline;">
+      <button type="submit" class="btn btn-danger">Unlike</button>
+    </form>
+    {{else}}
+    <form action="/like/{{restaurant.id}}" method="POST" style="display: inline;">
+      <button type="submit" class="btn btn-primary">Like</button>
+    </form>
+    {{/if}}
   </div>
 </div>
 

@@ -35,7 +35,8 @@ const restController = {
     const restData = restaurants.rows.map(r => ({
       ...r,
       desc: r.desc.substring(0, 50),
-      isFavorite: req.user.FavoriteRestaurants.map(d => d.id).includes(r.id)
+      isFavorite: req.user.FavoriteRestaurants.map(d => d.id).includes(r.id),
+      isLike: req.user.LikeRestaurants.map(d => d.id).includes(r.id)
     }))
     const categories = await Category.findAll({
       // include: [Restaurant],
@@ -54,15 +55,17 @@ const restController = {
       include: [
         Category,
         { model: User, as: 'FavoriteUsers' },
+        { model: User, as: 'LikeUsers' },
         { model: Comment, include: [User] }
       ]
       // using 'nest: true, raw: true' here have some problem,
       // So, use toJSON() later instead
     })
     const isFavorite = restaurant.FavoriteUsers.map(d => d.id).includes(req.user.id)
+    const isLike = restaurant.LikeUsers.map(d => d.id).includes(req.user.id)
     return res.render('restaurant', {
       restaurant: restaurant.toJSON(),
-      isFavorite
+      isFavorite, isLike
     })
   },
 

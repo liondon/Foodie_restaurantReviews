@@ -43,6 +43,9 @@ passport.deserializeUser((id, cb) => {
     include: [{
       model: Restaurant,
       as: 'FavoriteRestaurants'
+    }, {
+      model: Restaurant,
+      as: 'LikeRestaurants'
     }]
   })
     .then(user => {
