@@ -57,4 +57,8 @@ module.exports = (app, passport) => {
   app.get('/signin', userController.signInPage)
   app.post('/signin', passport.authenticate('local', { failureRedirect: '/signin', failureFlash: true }), userController.signIn)
   app.get('/logout', userController.logOut)
+
+  app.post('/favorite/:restaurantId', authenticate, userController.addFavorite)
+  app.delete('/favorite/:restaurantId', authenticate, userController.removeFavorite)
+
 }

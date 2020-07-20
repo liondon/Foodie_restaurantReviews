@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs')
 
 const db = require('../models')
 const User = db.User
+const Favorite = db.Favorite
 
 const userController = {
   signUpPage: (req, res) => {
@@ -53,6 +54,28 @@ const userController = {
     req.logout()  // provided by passport
     return res.redirect('/signin')
   },
+
+  addFavorite: async (req, res) => {
+    const { restaurantId } = req.params
+    const favorite = await Favorite.create({
+      UserId: req.user.id,
+      RestaurantId: restaurantId
+    })
+    return res.redirect('back')
+  },
+
+  removeFavorite: async (req, res) => {
+    const { restaurantId } = req.params
+    const favorite = await Favorite.findOne({
+      where: {
+        UserId: req.user.id,
+        RestaurantId: restaurantId
+      }
+    })
+    await favorite.destroy()
+    return res.redirect('back')
+
+  }
 }
 
 module.exports = userController
