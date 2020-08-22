@@ -46,8 +46,7 @@ module.exports = {
         CategoryId: Math.floor(Math.random() * 5) + 1,
         createdAt: new Date(),
         updatedAt: new Date()
-      })), {}
-    )
+      })), {})
   },
 
   down: async (queryInterface, Sequelize) => {
