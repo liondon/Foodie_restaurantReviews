@@ -1,0 +1,40 @@
+<div class="row mb-5">
+  {{#each restaurants}}
+  <div class="col-md-4">
+    <div class="card mb-4 shadow-sm">
+      <img class="card-img-top" src="{{this.image}}" alt="Card image cap" width="286px" height="180px">
+      <div class="card-body">
+        <p class="card-text">
+          <a href="/restaurants/{{this.id}}">
+            {{this.name}}
+          </a>
+          <span class="badge badge-secondary">收藏人數：{{this.FavoriteCount}}</span>
+        </p>
+        <span class="badge badge-secondary">{{this.Category.name}}</span>
+        <p class="card-text">{{this.desc}}</p>
+
+        {{#if isFavorite}}
+        <form action="/favorite/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-danger">Remove from Favorites</button>
+        </form>
+        {{else}}
+        <form action="/favorite/{{this.id}}" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-primary">Add to Favorites</button>
+        </form>
+        {{/if}}
+
+        {{#if isLike}}
+        <form action="/like/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-danger">Unlike</button>
+        </form>
+        {{else}}
+        <form action="/like/{{this.id}}" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-primary">Like</button>
+        </form>
+        {{/if}}
+
+      </div>
+    </div>
+  </div>
+  {{/each}}
+</div>

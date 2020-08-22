@@ -83,8 +83,53 @@ const restController = {
       nest: true, raw: true
     })
     return res.render('feeds', { restaurants, comments })
-  }
+  },
 
+  getTopRestaurants: async (req, res) => {
+    try {
+      let restaurants = await Restaurant.findAll({
+        include: [
+          { model: User, as: 'FavoriteUsers' }
+        ]
+      })
+      restaurants = restaurants.map(restaurant => ({
+        ...restaurant.dataValues,
+        FavoriteCount: restaurant.FavoriteUsers.length,
+        isFavorite: req.user.FavoriteRestaurants.map(d => d.id).includes(restaurant.id)
+      }))
+      restaurants = restaurants.sort((a, b) => b.FavoriteCount - a.FavoriteCount).slice(0, 10)
+      return res.render('topRes', { restaurants: restaurants })
+    } catch (err) {
+      console.log(err)
+    }
+  },
+
+  addFollowing: async (req, res) => {
+    try {
+      await Followship.create({
+        followerId: req.user.id,
+        followingId: req.params.userId
+      })
+      return res.redirect('back')
+    } catch (err) {
+      console.log(err)
+    }
+  },
+
+  removeFollowing: async (req, res) => {
+    try {
+      const followship = await Followship.findOne({
+        where: {
+          followerId: req.user.id,
+          followingId: req.params.userId
+        }
+      })
+      await followship.destroy()
+      return res.redirect('back')
+    } catch (err) {
+      console.log(err)
+    }
+  }
 }
 
 module.exports = restController
