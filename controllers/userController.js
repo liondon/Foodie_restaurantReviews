@@ -4,6 +4,7 @@ const db = require('../models')
 const User = db.User
 const Favorite = db.Favorite
 const Like = db.Like
+const Followship = db.Followship
 
 const userController = {
   signUpPage: (req, res) => {
@@ -112,6 +113,33 @@ const userController = {
       }))
       users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
       return res.render('topUser', { users: users })
+    } catch (err) {
+      console.log(err)
+    }
+  },
+
+  addFollowing: async (req, res) => {
+    try {
+      await Followship.create({
+        followerId: req.user.id,
+        followingId: req.params.userId
+      })
+      return res.redirect('back')
+    } catch (err) {
+      console.log(err)
+    }
+  },
+
+  removeFollowing: async (req, res) => {
+    try {
+      const followship = await Followship.findOne({
+        where: {
+          followerId: req.user.id,
+          followingId: req.params.userId
+        }
+      })
+      await followship.destroy()
+      return res.redirect('back')
     } catch (err) {
       console.log(err)
     }
