@@ -4,7 +4,6 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const flash = require('connect-flash')
 const methodOverride = require('method-override')
-const passport = require('./config/passport')
 
 const db = require('./models')
 
@@ -14,6 +13,7 @@ const port = process.env.PORT || 3000
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
+const passport = require('./config/passport')
 
 // setup handlebars
 app.engine('hbs', exphbs({
@@ -25,6 +25,7 @@ app.set('view engine', 'hbs')
 
 // setup bodyParser
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
 // setup session
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))
@@ -52,4 +53,4 @@ app.listen(port, () => {
   console.log(`Express server is running on http://localhost:${port}`)
 })
 
-require('./routes')(app, passport)
+require('./routes')(app)

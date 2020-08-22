@@ -7,13 +7,16 @@ const Category = db.Category
 const Restaurant = db.Restaurant
 const User = db.User
 
-const adminService = require('../services/adminService')
-
-const adminController = {
-  getRestaurants: (req, res) => {
-    adminService.getRestaurants(req, res, (data) => {
-      return res.render('admin/restaurants', data)
+const adminService = {
+  getRestaurants: (req, res, cb) => {
+    Restaurant.findAll({
+      include: [Category],
+      raw: true, nest: true
     })
+      .then(restaurants => {
+        cb({ restaurants })
+      })
+      .catch(err => console.log(err))
   },
 
   createRestaurant: (req, res) => {
@@ -24,11 +27,45 @@ const adminController = {
       .catch(err => console.log(err))
   },
 
-  postRestaurant: async (req, res) => {
-    adminService.postRestaurant(req, res, (data) => {
-      req.flash('success_msg', data.message)
-      return res.redirect('/admin/restaurants')
-    })
+  postRestaurant: async (req, res, cb) => {
+    const { name, tel, addr, open_hours, desc, categoryId } = req.body
+    const { file } = req
+    if (file) {
+      imgur.setClientID(IMGUR_CLIENT_ID)
+      imgur.upload(file.path, (err, img) => {
+        Restaurant.create({
+          name,
+          tel,
+          addr,
+          open_hours,
+          desc,
+          image: file ? img.data.link : null,
+          CategoryId: categoryId
+        })
+          .then(restaurant => {
+            cb({ 'message': `${restaurant.name} created!` })
+            // req.flash('success_msg', `${restaurant.name} created!`)
+            // return res.redirect('/admin/restaurants')
+          })
+          .catch(err => console.log(err))
+      })
+    } else {
+      Restaurant.create({
+        name,
+        tel,
+        addr,
+        open_hours,
+        desc,
+        image: file ? img.data.link : null,
+        CategoryId: categoryId
+      })
+        .then(restaurant => {
+          cb({ message: `${restaurant.name} created!` })
+          // req.flash('success_msg', `${restaurant.name} created!`)
+          // return res.redirect('/admin/restaurants')
+        })
+        .catch(err => console.log(err))
+    }
   },
 
   getRestaurant: (req, res) => {
@@ -95,12 +132,13 @@ const adminController = {
     }
   },
 
-  deleteRestaurant: (req, res) => {
-    adminService.deleteRestaurant(req, res, (data) => {
-      if (data.status === 'success') {
-        return res.redirect('/admin/restaurants')
-      }
-    })
+  deleteRestaurant: (req, res, cb) => {
+    Restaurant.findByPk(req.params.id)
+      .then(restaurant => {
+        restaurant.destroy()
+        cb({ status: 'success', message: '' })
+      })
+      .catch(err => console.log(err))
   },
 
   getUsers: (req, res) => {
@@ -126,4 +164,4 @@ const adminController = {
   }
 }
 
-module.exports = adminController
+module.exports = adminService
