@@ -32,7 +32,7 @@ These instructions will get you a copy of the project up and running on your loc
 - MySQL (and a database named `foodie`)
 
 ### Installing
-- clone the project to your local machine:`git clone https://github.com/liondon/restaurantPrj2`
+- clone the project to your local machine: `git clone https://github.com/liondon/restaurantPrj2`
 - go into the project folder: `cd restaurantPrj2`
 - use `./.env.template` to create a `./.env` file. See https://apidocs.imgur.com/ for `IMGUR_CLIENT_ID`
 - change `username` and `password` in `./config/config.json` according to your local MySQL credentials
