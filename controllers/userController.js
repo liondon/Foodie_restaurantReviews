@@ -16,7 +16,7 @@ const userController = {
     const { name, email, password, confirmPassword }
       = req.body
     if (password !== confirmPassword) {
-      req.flash('error_msg', 'Password and Confirm Password doesn\'t match!')
+      req.flash('error_msg', 'Password and Confirm Password don\'t match!')
       return res.redirect('/signup')
     }
     User.findOne({ where: { email } })
@@ -47,7 +47,7 @@ const userController = {
   },
 
   signIn: (req, res) => {
-    req.flash('sucess.msg', 'Login succeeded!')
+    req.flash('success_msg', 'Login succeeded!')
     return res.redirect('/restaurants')
   },
 

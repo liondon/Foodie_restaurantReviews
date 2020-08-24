@@ -11,7 +11,7 @@ const JwtStrategy = passportJWT.Strategy
 let userController = {
   signIn: (req, res) => {
     if (!req.body.email || !req.body.password) {
-      return res.json({ status: 'error', message: "required field(s) missed!" })
+      return res.json({ status: 'error', message: "required field(s) missing!" })
     }
     const username = req.body.email
     const password = req.body.password
@@ -19,10 +19,10 @@ let userController = {
     User.findOne({ where: { email: username } })
       .then(user => {
         if (!user) {
-          return res.status(401).json({ status: 'error', message: 'This email has not registered!' })
+          return res.status(401).json({ status: 'error', message: 'This email has NOT registered!' })
         }
         if (!bcrypt.compareSync(password, user.password)) {
-          return res.status(401).json({ status: 'error', message: 'password incorrect!' })
+          return res.status(401).json({ status: 'error', message: 'Email or Password incorrect!' })
         }
 
         // sign token
@@ -39,10 +39,10 @@ let userController = {
       })
   },
   signUp: (req, res) => {
-    if (req.body.passwordCheck !== req.body.password) {
+    if (req.body.confirmPassword !== req.body.password) {
       return res.json({
         status: 'error',
-        message: 'Password and Confirm Password didn\'t match!'
+        message: 'Password and Confirm Password don\'t match!'
       })
     } else {
       User.findOne({ where: { email: req.body.email } })
@@ -50,7 +50,7 @@ let userController = {
           if (user) {
             return res.json({
               status: 'error',
-              message: 'This email has already exist!'
+              message: 'This email has been registered!'
             })
           } else {
             User.create({
@@ -67,7 +67,6 @@ let userController = {
         })
     }
   },
-
 }
 
 module.exports = userController

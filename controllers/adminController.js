@@ -24,7 +24,7 @@ const adminController = {
       .catch(err => console.log(err))
   },
 
-  postRestaurant: async (req, res) => {
+  postRestaurant: (req, res) => {
     adminService.postRestaurant(req, res, (data) => {
       req.flash('success_msg', data.message)
       return res.redirect('/admin/restaurants')

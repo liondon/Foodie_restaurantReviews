@@ -89,16 +89,17 @@ const restController = {
     try {
       let restaurants = await Restaurant.findAll({
         include: [
-          { model: User, as: 'FavoriteUsers' }
+          { model: User, as: 'LikeUsers' }
         ]
       })
       restaurants = restaurants.map(restaurant => ({
         ...restaurant.dataValues,
-        FavoriteCount: restaurant.FavoriteUsers.length,
-        isFavorite: req.user.FavoriteRestaurants.map(d => d.id).includes(restaurant.id)
+        LikeCount: restaurant.LikeUsers.length,
+        isFavorite: req.user.FavoriteRestaurants.map(d => d.id).includes(restaurant.id),
+        isLike: req.user.LikeRestaurants.map(d => d.id).includes(restaurant.id),
       }))
-      restaurants = restaurants.sort((a, b) => b.FavoriteCount - a.FavoriteCount).slice(0, 10)
-      return res.render('topRes', { restaurants: restaurants })
+      restaurants = restaurants.sort((a, b) => b.LikeCount - a.LikeCount).slice(0, 10)
+      return res.render('topRest', { restaurants: restaurants })
     } catch (err) {
       console.log(err)
     }

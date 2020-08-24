@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Restaurant Forum</title>
+  <title>Foodie: Restaurant Reviews</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
     integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 </head>
@@ -12,35 +12,42 @@
 <body>
   {{!-- navbar --}}
   <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
-    <a class="navbar-brand" href="/">My Favorite Restaurants</a>
-    {{!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
-    </button> --}}
+    </button>
+    <a class="navbar-brand" href="/">Foodie</a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/">Link</a>
+          <a class="nav-link" href="/restaurants/top">Top10 Restaurants</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/restaurants/feeds">What's new</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/users/top">Popular Users</a>
         </li>
       </ul>
-      <div>
-        {{#if user.isAdmin}}
-        <a href="/admin">Admin</a>
-        {{/if}}
-        {{#if user}}
-        <span class="navbar-text">Hi, {{user.name}}!</span>
-        <a href="/users/{{user.id}}">Profile</a>
-        <a href="/logout"><button class="btn btn-outline-primary my-2 my-sm-0">Log Out</button></a>
-        {{else}}
-        <span class="navbar-text">
-          <a href="/signin">Log In</a>
-        </span>
-        {{/if}}
-      </div>
     </div>
+    <div>
+      {{#if user}}
+      <span class="navbar-text">Hi,</span><a href="/users/{{user.id}}">{{user.name}}</a><span
+        class="navbar-text mr-2">!</span>
+      {{#if user.isAdmin}}
+      <a href="/admin"><button class="btn btn-outline-primary my-2 my-sm-0">Admin Console</button></a>
+      {{/if}}
+      <a href="/logout"><button class="btn btn-outline-danger my-2 my-sm-0">Log Out</button></a>
+      {{else}}
+      <span class="navbar-text">
+        <a href="/signin">Log In</a>
+      </span>
+      {{/if}}
+    </div>
+
   </nav>
   </br>
 

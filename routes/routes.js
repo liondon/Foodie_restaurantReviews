@@ -1,14 +1,14 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('../config/passport')
+const multer = require('multer')
+const upload = multer({ dest: 'temp/' })
 
 const restController = require('../controllers/restController')
 const adminController = require('../controllers/adminController')
 const categoryController = require('../controllers/categoryController')
 const userController = require('../controllers/userController')
 const commentController = require('../controllers/commentController')
-const multer = require('multer')
-const upload = multer({ dest: 'temp/' })
 
 const authenticate = (req, res, next) => {
   if (req.isAuthenticated()) {

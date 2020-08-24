@@ -19,7 +19,7 @@ passport.use(new LocalStrategy(
       .then(user => {
         if (!user) {
           return cb(null, false,
-            req.flash('error_msg', 'Email doesn\'t exist!'));
+            req.flash('error_msg', 'This email has NOT registered!'));
         }
         if (!bcrypt.compareSync(password, user.password)) {
           return cb(null, false,
@@ -60,7 +60,7 @@ passport.deserializeUser((id, cb) => {
     })
 })
 
-// JWT
+// JWT strategy for Web API server
 const jwt = require('jsonwebtoken')
 const passportJWT = require('passport-jwt')
 const ExtractJwt = passportJWT.ExtractJwt

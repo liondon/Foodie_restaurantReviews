@@ -1,3 +1,5 @@
+<h1>Top10 Restaurants</h1>
+<hr />
 <div class="row mb-5">
   {{#each restaurants}}
   <div class="col-md-4">
@@ -8,7 +10,7 @@
           <a href="/restaurants/{{this.id}}">
             {{this.name}}
           </a>
-          <span class="badge badge-secondary">收藏人數：{{this.FavoriteCount}}</span>
+          <span class="badge badge-secondary">{{this.LikeCount}} Like</span>
         </p>
         <span class="badge badge-secondary">{{this.Category.name}}</span>
         <p class="card-text">{{this.desc}}</p>
