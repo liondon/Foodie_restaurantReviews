@@ -106,7 +106,7 @@ const adminController = {
   getUsers: (req, res) => {
     User.findAll({ raw: true })
       .then(users => {
-        return res.render('admin/users', { users })
+        return res.render('admin/users', { users, currUser: req.user.id })
       })
       .catch(err => console.log(err))
   },
