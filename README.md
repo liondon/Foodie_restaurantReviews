@@ -1,7 +1,7 @@
 # Foodie: Restaurant Reviews
 A restaurant review web app with RESTful APIs and CRUD functions.  
 Built with Node.js, Express, MySQL, and Heroku.  
-Check it here: https://foodie-restaurant-reviews.herokuapp.com/
+Check it here: https://foodie-restaurant-reviews.herokuapp.com/  
 (Log in with email: `root@example.com`, password: `12345678` or `user1@example.com`, password: `12345678`)
 
 ## Features
